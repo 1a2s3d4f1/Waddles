@@ -2,7 +2,7 @@
   "id": "waddles",
   "name": "Waddles",
   "description": "Waddles adds somewhat realistic Adélie penguins that waddle",
-  "icon": "assets/waddles/icon.png",
+  "icon": "assets/waddles/logo.png",
   "version": "$version",
   "side": "universal",
    "contributors": [

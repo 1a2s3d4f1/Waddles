@@ -2,7 +2,7 @@ package com.girafi.waddles.entity;
 
 import com.girafi.waddles.init.PenguinRegistry;
 import com.girafi.waddles.init.WaddlesSounds;
-import net.minecraft.class_1394;
+import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -36,7 +36,7 @@ public class EntityAdeliePenguin extends AnimalEntity {
         this.goalSelector.add(4, new FleeEntityGoal<>(this, PolarBearEntity.class, 6.0F, 1.0D, 1.2D));
         this.goalSelector.add(5, new TemptGoal(this, 1.0D, false, TEMPTATION_ITEMS));
         this.goalSelector.add(6, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.add(7, new class_1394(this, 1.0D)); //Wander
+        this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0D)); //Wander
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(9, new LookAtEntityGoal(this, EntityAdeliePenguin.class, 6.0F));
         this.goalSelector.add(10, new LookAroundGoal(this));
@@ -51,7 +51,7 @@ public class EntityAdeliePenguin extends AnimalEntity {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return this.isChild() ? WaddlesSounds.ADELIE_BABY_AMBIENT : WaddlesSounds.ADELIE_AMBIENT;
+        return this.isBaby() ? WaddlesSounds.ADELIE_BABY_AMBIENT : WaddlesSounds.ADELIE_AMBIENT;
     }
 
     @Override
@@ -62,18 +62,6 @@ public class EntityAdeliePenguin extends AnimalEntity {
     @Override
     protected SoundEvent getDeathSound() {
         return WaddlesSounds.ADELIE_DEATH;
-    }
-
-    @Override
-    public void updateMovement() {
-        super.updateMovement();
-        if (world.isClient) {
-            if (this.z != this.prevZ) {
-                if (moveFlipper) {
-                    rotationFlipper++;
-                }
-            }
-        }
     }
 
     @Override
@@ -90,11 +78,6 @@ public class EntityAdeliePenguin extends AnimalEntity {
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) { //isBreedingItem
-        return TEMPTATION_ITEMS.matches(stack);
-    }
-
-    @Override
     public Identifier getLootTableId() {
         /*if (ConfigurationHandler.dropFish) {
             return Waddles.LOOT_ENTITIES_PENGUIN_FISH;
@@ -103,13 +86,13 @@ public class EntityAdeliePenguin extends AnimalEntity {
     }
 
     @Override
-    public PassiveEntity createChild(PassiveEntity var1) {
-        return new EntityAdeliePenguin(this.world);
+    public boolean isBreedingItem(ItemStack stack) { //isBreedingItem
+        return TEMPTATION_ITEMS.test(stack);
     }
 
     @Override
-    public float getEyeHeight() {
-        return this.isChild() ? 0.5F : 0.9F;
+    public PassiveEntity createChild(PassiveEntity var1) {
+        return new EntityAdeliePenguin(this.world);
     }
 
     private class EntityAIExtinguishFire extends EscapeDangerGoal {
@@ -119,7 +102,7 @@ public class EntityAdeliePenguin extends AnimalEntity {
 
         @Override
         public boolean canStart() {
-            return (EntityAdeliePenguin.this.isChild() || EntityAdeliePenguin.this.isOnFire()) && super.canStart();
+            return (EntityAdeliePenguin.this.isBaby() || EntityAdeliePenguin.this.isOnFire()) && super.canStart();
         }
     }
 }

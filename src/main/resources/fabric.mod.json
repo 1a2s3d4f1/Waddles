@@ -2,9 +2,18 @@
   "id": "waddles",
   "name": "Waddles",
   "description": "Waddles adds somewhat realistic Adélie penguins that waddle",
+  "icon": "assets/waddles/icon.png",
   "version": "$version",
   "side": "universal",
+   "contributors": [
+    "Girafi"
+  ],
   "initializer": "com.girafi.waddles.Waddles",
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/waddles",
+    "issues": "https://github.com/GirafiStudios/Waddles/issues",
+    "sources": "https://github.com/GirafiStudios/Waddles"
+  },
   "requires": {
     "fabric": "*"
   },
